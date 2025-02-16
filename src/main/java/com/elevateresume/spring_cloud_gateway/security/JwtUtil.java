@@ -3,12 +3,9 @@ package com.elevateresume.spring_cloud_gateway.security;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;
-import io.jsonwebtoken.security.SecureDigestAlgorithm;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 
-import javax.crypto.SecretKey;
 import java.util.Date;
 
 @Component
@@ -28,7 +25,7 @@ public class JwtUtil {
             String username = claims.getSubject();
             Date expiration = claims.getExpiration();
 
-            return !expiration.before(new Date());
+            return !expiration.before(new Date(System.currentTimeMillis()));
         } catch (Exception e) {
             return false;
         }
@@ -40,7 +37,7 @@ public class JwtUtil {
         return Jwts.parser()
                 .verifyWith(Keys.hmacShaKeyFor(secretKey.getBytes()))
                 .build()
-                .parseUnsecuredClaims(token)
+                .parseSignedClaims(token)
                 .getPayload();
     }
 }

@@ -29,10 +29,10 @@ public class SecurityConfig {
                 .sessionManagement(session -> session.sessionCreationPolicy(
                         SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers(PUBLIC_ROUTES).permitAll()
+                        .requestMatchers("/auth/**").permitAll()
                         .anyRequest().authenticated()
-                );
-//                .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
-        return httpSecurity.build();
+                )
+                .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
+         return httpSecurity.build();
     }
 }

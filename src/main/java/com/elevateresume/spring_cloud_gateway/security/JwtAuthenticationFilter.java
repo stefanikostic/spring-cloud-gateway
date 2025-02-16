@@ -14,36 +14,21 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
-import java.util.List;
 
 @Component
 @RequiredArgsConstructor
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
+
     private static final String AUTHORIZATION_HEADER_NAME = "Authorization";
     private static final String BEARER_PREFIX = "Bearer ";
-    private static final List<String> PUBLIC_PATHS = List.of("/auth/login", "/auth/register");
 
     private final JwtUtil jwtUtil;
 
-   /* @Override
-    protected boolean shouldNotFilter(HttpServletRequest request) throws ServletException {
-        String path = request.getRequestURI();
-        if (PUBLIC_PATHS.contains(path)) {
-            return true;
-        }
-        return super.shouldNotFilter(request);
-    }*/
 
     @Override
     protected void doFilterInternal(HttpServletRequest request,
                                     @NonNull HttpServletResponse response,
                                     @NonNull FilterChain filterChain) throws ServletException, IOException {
-        String path = request.getRequestURI();
-        if (PUBLIC_PATHS.contains(path)) {
-            filterChain.doFilter(request, response); // Proceed without checking token
-            return;
-        }
-
         String authHeader = request.getHeader(AUTHORIZATION_HEADER_NAME);
 
         if (authHeader != null && authHeader.startsWith(BEARER_PREFIX)) {
