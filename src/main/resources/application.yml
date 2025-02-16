@@ -1,15 +1,36 @@
-spring:
-  cloud:
-    gateway:
-      routes:
-        - id: user-service
-          uri: http://localhost:8081/
-          predicates:
-            - Path=/auth/**
-
 server:
   port: 8080
 
 logging:
   level:
     org.springframework: DEBUG
+
+### JWT Configuration
+security:
+  jwt:
+    secret-key: 35b93730e927c147c2c86371318a885d253fb51e82fdee48a0f16bde79ecaf522757de769c2f24aa24afe4f6fd9f13a54e05c81990bc0fea4a2858e0199386257f2938a57cf8e3246df091f57ce7b43a9df18f01389e405f1a0ec709c43078d7f4741acb58f9eadb33d65a9cf09d9f54c89c9e6a27665f7fdbfca018fb1410d5d97b4c784dceda37fd2f27358b1bf0bc26e4ac2e634f862382590e1aadbbc1e015996bbd9b8fbe1044a3f9f6830bbfbf6cecd866a6937660ea6fbc6b691330f08e9a633d19f7df8bda0322f9a536bc4fa500f5bb77674c35fc25d1f949f88895b597c052996771ec4d75270f329b09b061ccd04d9854ae8eeeca3db774ff3fae
+    expiration-time: 3600000
+
+spring:
+  cloud:
+    gateway:
+      default-filters:
+        - name: PreserveHostHeader
+      httpclient:
+        response-timeout: 10s
+      forwarded-error-enabled: false
+
+#
+#spring:
+#  cloud:
+#    gateway:
+#      mvc:
+#        routes:
+#          - id: resume-service
+#            uri: http://localhost:8082/
+#            predicates:
+#              - Path=/resume/**
+#          - id: user-service
+#            uri: http://localhost:8081/   # This is the URL for the user-service
+#            predicates:
+#              - Path=/auth/**
