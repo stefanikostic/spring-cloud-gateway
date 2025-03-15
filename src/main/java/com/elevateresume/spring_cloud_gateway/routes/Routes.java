@@ -1,7 +1,5 @@
 package com.elevateresume.spring_cloud_gateway.routes;
 
-import com.elevateresume.spring_cloud_gateway.security.JwtAuthenticationFilter;
-import lombok.RequiredArgsConstructor;
 import org.springframework.cloud.gateway.server.mvc.handler.GatewayRouterFunctions;
 import org.springframework.cloud.gateway.server.mvc.handler.HandlerFunctions;
 import org.springframework.context.annotation.Bean;
@@ -22,5 +20,10 @@ public class Routes {
     @Bean
     public RouterFunction<ServerResponse> resumeService() {
         return RouterFunctions.route(RequestPredicates.path("/resume/**"), request -> HandlerFunctions.http("http://localhost:8082/").handle(request));
+    }
+
+    @Bean
+    public RouterFunction<ServerResponse> previewResumeService() {
+        return RouterFunctions.route(RequestPredicates.path("/preview-resume/**"), request -> HandlerFunctions.http("http://localhost:8083/").handle(request));
     }
 }
