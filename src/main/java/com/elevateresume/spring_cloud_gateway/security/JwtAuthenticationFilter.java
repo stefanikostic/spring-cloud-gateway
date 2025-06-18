@@ -20,9 +20,7 @@ import java.io.IOException;
 @RequiredArgsConstructor
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
-    private static final String AUTHORIZATION_HEADER_NAME = "Authorization";
-    private static final String BEARER_PREFIX = "Bearer ";
-    private static final String TOKEN = "token";
+    private static final String TOKEN = "AUTH_TOKEN";
     private static final String USER_ROLE = "USER";
 
     private final JwtUtil jwtUtil;
@@ -31,8 +29,6 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     protected void doFilterInternal(HttpServletRequest request,
                                     @NonNull HttpServletResponse response,
                                     @NonNull FilterChain filterChain) throws ServletException, IOException {
-        String authHeader = request.getHeader(AUTHORIZATION_HEADER_NAME);
-
         String token = null;
         Cookie[] cookies = request.getCookies();
         if (cookies != null) {
