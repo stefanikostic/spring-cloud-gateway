@@ -23,6 +23,7 @@ public class Routes {
                 .route()
                 .route(RequestPredicates.path("external/resume/**"), request -> HandlerFunctions.http("http://localhost:8082/").handle(request))
                 .route(RequestPredicates.path("internal/resume/**"), request -> HandlerFunctions.http("http://localhost:8082/").handle(request))
+                .route(RequestPredicates.path("resume/**"), request -> HandlerFunctions.http("http://localhost:8082/").handle(request))
                 .build();
     }
 
