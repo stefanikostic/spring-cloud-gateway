@@ -23,7 +23,7 @@ public class SecurityConfig {
     private static final String LOGIN_PATH = "/auth/login";
     private static final String REGISTER_PATH = "/auth/register";
 
-    private static final String[] PUBLIC_ROUTES = { LOGIN_PATH, REGISTER_PATH };
+    private static final String AUTH_PATH = "/auth/**";
 
     private final JwtAuthenticationFilter jwtAuthenticationFilter;
 
@@ -35,7 +35,7 @@ public class SecurityConfig {
                 .sessionManagement(session -> session.sessionCreationPolicy(
                         SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/auth/**").permitAll()
+                        .requestMatchers(AUTH_PATH).permitAll()
                         .anyRequest().authenticated()
                 )
                 .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);

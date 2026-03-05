@@ -22,7 +22,6 @@ public class JwtUtil {
     public boolean validateToken(String token) {
         try {
             Claims claims = extractClaims(token);
-            String username = claims.getSubject();
             Date expiration = claims.getExpiration();
 
             return !expiration.before(new Date(System.currentTimeMillis()));

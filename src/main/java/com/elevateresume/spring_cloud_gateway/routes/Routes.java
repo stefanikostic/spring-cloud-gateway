@@ -12,23 +12,35 @@ import org.springframework.web.servlet.function.ServerResponse;
 @Configuration
 public class Routes {
 
+    private static final String USER_SERVICE = "user-service";
+    private static final String AUTH_PATTERN = "/auth/**";
+    private static final String EXTERNAL_RESUME_PATH = "external/resume/**";
+    private static final String INTERNAL_RESUME_PATH = "internal/resume/**";
+    private static final String RESUME_PATH = "resume/**";
+    private static final String PREVIEW_RESUME_PATH = "/preview-resume/**";
+
     @Bean
     public RouterFunction<ServerResponse> authService() {
-        return GatewayRouterFunctions.route("user-service").route(RequestPredicates.path("/auth/**"), HandlerFunctions.http("http://localhost:8081/")).build();
+        return GatewayRouterFunctions.route(USER_SERVICE)
+                .route(RequestPredicates.path(AUTH_PATTERN),
+                        HandlerFunctions.http("http://localhost:8081/")).build();
     }
 
     @Bean
     public RouterFunction<ServerResponse> resumeService() {
         return RouterFunctions
                 .route()
-                .route(RequestPredicates.path("external/resume/**"), request -> HandlerFunctions.http("http://localhost:8082/").handle(request))
-                .route(RequestPredicates.path("internal/resume/**"), request -> HandlerFunctions.http("http://localhost:8082/").handle(request))
-                .route(RequestPredicates.path("resume/**"), request -> HandlerFunctions.http("http://localhost:8082/").handle(request))
+                .route(RequestPredicates.path(EXTERNAL_RESUME_PATH),
+                        request -> HandlerFunctions.http("http://localhost:8082/").handle(request))
+                .route(RequestPredicates.path(INTERNAL_RESUME_PATH),
+                        request -> HandlerFunctions.http("http://localhost:8082/").handle(request))
+                .route(RequestPredicates.path(RESUME_PATH),
+                        request -> HandlerFunctions.http("http://localhost:8082/").handle(request))
                 .build();
     }
 
     @Bean
     public RouterFunction<ServerResponse> previewResumeService() {
-        return RouterFunctions.route(RequestPredicates.path("/preview-resume/**"), request -> HandlerFunctions.http("http://localhost:8083/").handle(request));
+        return RouterFunctions.route(RequestPredicates.path(PREVIEW_RESUME_PATH), request -> HandlerFunctions.http("http://localhost:8083/").handle(request));
     }
 }
